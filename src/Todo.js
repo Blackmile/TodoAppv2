@@ -4,25 +4,29 @@ import React, { useState } from 'react'
 
 const Todo = () => {
 
-  const [task, setTask] = useState()
-      const [taskItems, setTaskItems] = useState([])
-      const [modalVisible, setModalVisible] = useState(false);
-      
-      const handleAddTask = () => {
-          setTaskItems((currTask) => [...currTask, task])
-          setModalVisible(!modalVisible)
-          setTask(null)
-      }
+  const [task, setTask] = useState('')
+  const [taskItems, setTaskItems] = useState([])
+  const [modalVisible, setModalVisible] = useState(false);
+  
+  const handleAddTask = () => {
+      setTaskItems((currTask) => [...currTask, task])
+      setModalVisible(!modalVisible)
+      setTask(null)
+      console.log(task, taskItems)
+
+  }
 
   return (
     <View style={styles.container}>
-      <View style={styles.todo}>
-        <Text>  nothing to display here!! </Text>
-        <View style={styles.actionBtn} >
-          <Ionicons name="trash-bin" size={18} color="black" />
-          <Ionicons name="checkmark-circle" size={18} color="black" />
+      {taskItems.map(items => (
+        <View style={styles.todo} key={items}>
+          <Text> {items  } </Text>
+          <View style={styles.actionBtn} >
+            <Ionicons name="trash-bin" size={18} color="black" />
+            <Ionicons name="checkmark-circle" size={18} color="black" />
+          </View>
         </View>
-      </View>
+      ))}
       <View style={styles.addBtn}>
         <Pressable onPress={()=> setModalVisible(true)}>
           <Ionicons name="add-circle-sharp" size={52} color="white" />
@@ -40,6 +44,8 @@ const Todo = () => {
             <TextInput
               placeholder='What are you doing today'
               style={styles.textInput}
+              value={task}
+              onChangeText={setTask}
             />
             <View style={styles.modalBtn} >
               <Pressable
@@ -51,7 +57,9 @@ const Todo = () => {
               </Pressable>
               <Pressable
                 style={styles.closeButton}
-                onPress={() => setModalVisible(false)}
+                onPress={() => {
+                  handleAddTask(task)
+                }}
               >
                 <Ionicons name="checkmark-circle" size={16} color="green" />
                 <Text style={styles.textStyle}>done</Text>
@@ -82,8 +90,9 @@ const styles = StyleSheet.create({
   },
   actionBtn: {
     flexDirection: 'row',
-    position: 'relative',
+    position: 'absolute',
     left: 290,
+    bottom: 5,
     width: 70,
     justifyContent: 'space-between',
   },
@@ -133,6 +142,5 @@ const styles = StyleSheet.create({
     width: 250,
     fontSize: 16,
     marginBottom: 20,
-    
   },
 })
