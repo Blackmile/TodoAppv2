@@ -1,4 +1,4 @@
-import { Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { FlatList, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useState } from 'react'
 
@@ -9,24 +9,30 @@ const Todo = () => {
   const [modalVisible, setModalVisible] = useState(false);
   
   const handleAddTask = () => {
-      setTaskItems((currTask) => [...currTask, task])
+      setTaskItems((currTask) => [...currTask, {"text": task, "key": Math.random().toString()}])
       setModalVisible(!modalVisible)
       setTask(null)
       console.log(task, taskItems)
 
   }
+  
 
   return (
     <View style={styles.container}>
-      {taskItems.map(items => (
-        <View style={styles.todo} key={items}>
-          <Text> {items  } </Text>
-          <View style={styles.actionBtn} >
-            <Ionicons name="trash-bin" size={18} color="black" />
-            <Ionicons name="checkmark-circle" size={18} color="black" />
+      <FlatList
+        style={styles.textStyle}
+        data={taskItems}
+        renderItem={({item}) => (
+          <View style={styles.todo} >
+            <Text> {item.text} </Text>
+            <View style={styles.actionBtn} >
+              <Ionicons name="trash-bin" size={18} color="black" />
+              <Ionicons name="checkmark-circle" size={18} color="black" />
+            </View>
           </View>
-        </View>
-      ))}
+        )}
+        
+      />
       <View style={styles.addBtn}>
         <Pressable onPress={()=> setModalVisible(true)}>
           <Ionicons name="add-circle-sharp" size={52} color="white" />
@@ -76,7 +82,7 @@ export default Todo
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'green',
+    // backgroundColor: 'green',
     display: 'flex',
     flex: 1,
   },
