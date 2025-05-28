@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -7,8 +7,12 @@ const TodoCard = (props) => {
     <View style={styles.todo} >
         <Text> {props.text} </Text>
         <View style={styles.actionBtn} >
-            <Ionicons name="trash-bin" size={18} color="black" />
-            <Ionicons name="checkmark-circle" size={18} color="black" />
+            <Pressable onPress={props.onDelete.bind(this, props.id)}>
+                <Ionicons name="trash-bin" size={18} color="black" />
+            </Pressable>
+            <Pressable onPress={props.onCheck}>
+                <Ionicons name="checkmark-circle" size={18} color="black" />
+            </Pressable>
         </View>
     </View>
   )
