@@ -24,7 +24,7 @@ const Todo = () => {
   }
   
   const completeTask = (id, text) => {
-    setCount(text)
+    setCount((currTask) => [...currTask, {text, id}] )
     setTaskItems(currTask => (currTask.filter((task) => task.id !== id)))
     console.log(count, 'i am count')
   }
