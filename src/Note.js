@@ -30,8 +30,9 @@ const Note = () => {
   ]
 
   return (
-    <View>
+    <View >
       <FlatList
+        style={styles.container}
         data={Data}
         renderItem={({ item }) => (
           <Text> {item.title} </Text>
@@ -43,4 +44,8 @@ const Note = () => {
 
 export default Note
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  }
+})
