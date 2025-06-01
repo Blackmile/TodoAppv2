@@ -8,10 +8,10 @@ const TodoCard = (props) => {
         <Text> {props.text} </Text>
         <View style={styles.actionBtn} >
             <Pressable onPress={props.onDelete.bind(this, props.id)}>
-                <Ionicons name="trash-bin" size={18} color="black" />
+                <Ionicons name="trash-bin" size={18} color="#EE7F7F" />
             </Pressable>
-            <Pressable onPress={props.onCheck}>
-                <Ionicons name="checkmark-circle" size={18} color="black" />
+            <Pressable onPress={props.onCheck.bind(this, props.id, props.text)}>
+                <Ionicons name="checkmark-circle" size={18} color="green" />
             </Pressable>
         </View>
     </View>
@@ -22,7 +22,7 @@ export default TodoCard
 
 const styles = StyleSheet.create({
     todo: {
-        backgroundColor: 'red',
+        backgroundColor: '#fff',
         width: 'auto',
         height: 50,
         margin: 10,
