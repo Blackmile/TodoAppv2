@@ -5,34 +5,44 @@ import EmptyList from './components/EmptyList';
 import TodoCard from './components/TodoCard';
 import TodoInput from './components/TodoInput';
 import DoneTask from './components/DoneTask';
+import { useSelector, useDispatch } from 'react-redux';
+import { addTodo, deleteTodo, addCompleted } from '../slices/todoSlice';
 
 const Todo = () => {
 
-  const [taskItems, setTaskItems] = useState([])
+  // const [taskItems, setTaskItems] = useState([])
   const [modalVisible, setModalVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false)
+  
+  const todos = useSelector(state => state.todos.todos);
+  const complet = useSelector(state => state.doneTodos.doneTodos)
+  const dispatch = useDispatch();
+  console.log(complet)
   const [count, setCount] = useState([])
+
   const handleAddTask = (task) => {
-      setTaskItems((currTask) => [...currTask, {text: task, id: Math.random().toString()}])
+      // setTaskItems((currTask) => [...currTask, {text: task, id: Math.random().toString(), date: Date().toString()  }])
       setModalVisible(!modalVisible)
   }
 
   const deleteTask = (id) => {
-    setTaskItems(currTask => (currTask.filter((task) => task.id !== id)))
+    // setTaskItems(currTask => (currTask.filter((task) => task.id !== id)))
+    dispatch(deleteTodo(id))
     alert('you deleted task')
   }
   
   const completeTask = (id, text) => {
-    setCount((currTask) => [...currTask, {text, id}] )
-    setTaskItems(currTask => (currTask.filter((task) => task.id !== id)))
+    dispatch(deleteTodo(id))
+    dispatch(addCompleted({id, text}))
+    // setCount((currTask) => [...currTask, {text, id}] )
   }
 
-  
+
 
   return (
     <View style={styles.container}>
-      <FlatList ListEmptyComponent={<EmptyList/>} data={[...taskItems].reverse()} renderItem={({item}) => (<TodoCard id={item.id} text={item.text} onDelete={deleteTask} onCheck={completeTask} />)}
-      contentContainerStyle={taskItems.length === 0 && {flex: 1}} />
+      <FlatList ListEmptyComponent={<EmptyList/>} data={[...todos].reverse()} renderItem={({item}) => (<TodoCard id={item.id} text={item.text} date={item.date} onDelete={deleteTask} onCheck={completeTask} />)}
+      contentContainerStyle={todos.length === 0 && {flex: 1}} />
       <View style={styles.footer} >
         <View style={styles.doneTask} >
           <Pressable onPress={() => {setIsVisible(true)}}>
@@ -41,11 +51,11 @@ const Todo = () => {
         </View>
         <View style={styles.addBtn}>
           <Pressable onPress={()=>{setModalVisible(true)} }>
-            <Ionicons name="add-circle-sharp" size={52} color="white" />
+            <Ionicons name="add-circle-sharp" size={52} color="black" />
           </Pressable> 
         </View>
       </View>
-      <DoneTask onOpen={isVisible} onClose ={() => setIsVisible(false)} numTask={count.length}/>
+      <DoneTask onOpen={isVisible} onClose ={() => setIsVisible(false)} numTask={complet.length}/>
       <TodoInput onCancel={() => setModalVisible(false)} onDone={handleAddTask} onVisible={modalVisible} onRequest={() => setModalVisible(false)}  />
     </View>
   )
@@ -59,16 +69,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   addBtn:{
-    right: 30,
+    right: 1,
   },
   footer: {
     flexDirection: 'row',
     justifyContent:'space-between',
     alignItems:'center',
-    width: 400,
+    width: '100%',
     position: 'absolute',
-    bottom: 100,
-    margin: 10,
+    bottom: 0,
+    backgroundColor: '#fff',
+    padding: 30,
+    borderTopLeftRadius: 17,
+    borderTopRightRadius: 17,
   },
   doneTask: {},
   
