@@ -15,7 +15,6 @@ const Todo = () => {
   const handleAddTask = (task) => {
       setTaskItems((currTask) => [...currTask, {text: task, id: Math.random().toString()}])
       setModalVisible(!modalVisible)
-      console.log(task, taskItems)
   }
 
   const deleteTask = (id) => {
@@ -26,7 +25,6 @@ const Todo = () => {
   const completeTask = (id, text) => {
     setCount((currTask) => [...currTask, {text, id}] )
     setTaskItems(currTask => (currTask.filter((task) => task.id !== id)))
-    console.log(count, 'i am count')
   }
 
   
@@ -37,12 +35,12 @@ const Todo = () => {
       contentContainerStyle={taskItems.length === 0 && {flex: 1}} />
       <View style={styles.footer} >
         <View style={styles.doneTask} >
-          <Pressable onPress={() => {console.log('pressed for dropdown'), setIsVisible(true)}}>
+          <Pressable onPress={() => {setIsVisible(true)}}>
             <Text>view completed tasks</Text>
           </Pressable>
         </View>
         <View style={styles.addBtn}>
-          <Pressable onPress={()=>{console.log('pressed'), setModalVisible(true)} }>
+          <Pressable onPress={()=>{setModalVisible(true)} }>
             <Ionicons name="add-circle-sharp" size={52} color="white" />
           </Pressable> 
         </View>
