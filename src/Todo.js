@@ -15,10 +15,8 @@ const Todo = () => {
   const [isVisible, setIsVisible] = useState(false)
   
   const todos = useSelector(state => state.todos.todos);
-  const complet = useSelector(state => state.doneTodos.doneTodos)
+  
   const dispatch = useDispatch();
-  console.log(complet)
-  const [count, setCount] = useState([])
 
   const handleAddTask = (task) => {
       // setTaskItems((currTask) => [...currTask, {text: task, id: Math.random().toString(), date: Date().toString()  }])
@@ -55,7 +53,7 @@ const Todo = () => {
           </Pressable> 
         </View>
       </View>
-      <DoneTask onOpen={isVisible} onClose ={() => setIsVisible(false)} numTask={complet.length}/>
+      <DoneTask onOpen={isVisible} onClose ={() => setIsVisible(false)} />
       <TodoInput onCancel={() => setModalVisible(false)} onDone={handleAddTask} onVisible={modalVisible} onRequest={() => setModalVisible(false)}  />
     </View>
   )
