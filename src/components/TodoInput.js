@@ -29,6 +29,7 @@ const TodoInput = (props) => {
             style={styles.textInput}
             value={task}
             onChangeText={setTask}
+            maxLength={47}
           />
           <View style={styles.modalBtn} >
             <Pressable style={styles.Btn} onPress={handleCancel} >
