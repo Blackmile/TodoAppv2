@@ -6,7 +6,8 @@ import TodoCard from './components/TodoCard';
 import TodoInput from './components/TodoInput';
 import DoneTask from './components/DoneTask';
 import { useSelector, useDispatch } from 'react-redux';
-import { addTodo, deleteTodo, addCompleted } from '../slices/todoSlice';
+import { addTodo, deleteTodo } from '../slices/todoSlice';
+import { addCompleted } from '../slices/doneSlice'
 
 const Todo = () => {
 
