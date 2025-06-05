@@ -1,9 +1,14 @@
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 import Modal from 'react-native-modal';
 import { useSelector, useDispatch } from 'react-redux';
-import { resetDone } from '../../slices/doneSlice'
+import { resetDone } from '../../slices/doneSlice';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
+import Deleted from './Deleted';
+
 
 const DoneTask = (props) => {
+    const navigation = useNavigation();
 
     const DATA = useSelector(state => state.doneTodos.doneTodos)
     const dispatch = useDispatch()
@@ -23,16 +28,28 @@ const DoneTask = (props) => {
         <View style={styles.content}>
           <Text style={styles.textStyle} > completed task {DATA.length} </Text>
           <Pressable onPress={props.onClose} >
-            <Text> down </Text>
+            <Ionicons style={styles.downbtn} name="chevron-down-circle" size={24} color="black" />
           </Pressable>
           <FlatList 
             data={DATA} 
             renderItem={({item}) => <Text style={styles.itemStyle} >{item.text}</Text>}
             initialNumToRender={5}
           />
-          <Pressable onPress={() => dispatch(resetDone())}>
-            <Text> clear list </Text>
-          </Pressable>
+          <View style={styles.footer}>
+            <Pressable onPress={() => dispatch(resetDone())}>
+                <Text> clear list </Text>
+            </Pressable>
+            <Pressable 
+                style={{alignContent: 'center', flexDirection: 'row'}} 
+                onPress={() => {
+                    props.onClose()
+                    navigation.navigate('Deleted')
+                }} 
+            >
+                <Ionicons name="trash-bin" size={14} color="black" />
+                <Text> Deleted tasks </Text>
+            </Pressable>
+          </View>
         </View>
       </Modal> 
 
@@ -62,9 +79,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     itemStyle: {
-        backgroundColor: 'green',
+        backgroundColor: '#A7E28C',
         marginBottom: 10,
-        padding: 20,
+        padding: 5,
         borderRadius: 10,
+        // color: 'white',
     },
+    downbtn: {
+        left: "90%",
+        marginBottom: 10,
+    },
+    footer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    }
 })
