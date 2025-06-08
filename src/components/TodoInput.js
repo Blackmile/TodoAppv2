@@ -1,12 +1,17 @@
 import { Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import { addTodo, deleteTodo } from '../../slices/todoSlice';
 
 const TodoInput = (props) => {
   const [task, setTask] = useState  ('')
+  const todos = useSelector(state => state.todos.todos);
+  const dispatch = useDispatch();
 
   const handleAddTask = () => {
-    props.onDone(task)
+    props.onDone()
+    dispatch(addTodo(task))
     setTask(null)
   }
   
@@ -24,6 +29,7 @@ const TodoInput = (props) => {
             style={styles.textInput}
             value={task}
             onChangeText={setTask}
+            maxLength={47}
           />
           <View style={styles.modalBtn} >
             <Pressable style={styles.Btn} onPress={handleCancel} >
