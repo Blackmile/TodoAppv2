@@ -4,6 +4,7 @@ const initialState = {
   todos: [],
 };
 
+const date = new Date()
 
 const todoSlice = createSlice(
   {
@@ -11,7 +12,7 @@ const todoSlice = createSlice(
     initialState,
     reducers: {
       addTodo: (state, action) => {
-        state.todos.push({ id: Math.random().toString(), text: action.payload, date: Date() });
+        state.todos.push({ id: Math.random().toString(), text: action.payload, date: date.toDateString() });
       },
       deleteTodo: (state, action) => {
         state.todos = state.todos.filter(todo => todo.id !== action.payload);
