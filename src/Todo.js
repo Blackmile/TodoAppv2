@@ -6,12 +6,12 @@ import TodoCard from './components/TodoCard';
 import TodoInput from './components/TodoInput';
 import DoneTask from './components/DoneTask';
 import { useSelector, useDispatch } from 'react-redux';
-import { addTodo, deleteTodo } from '../slices/todoSlice';
-import { addCompleted } from '../slices/doneSlice'
+import { deleteTodo } from '../slices/todoSlice';
+import { addCompleted } from '../slices/doneSlice';
+import { recover } from '../slices/recoverSlice';
 
 const Todo = () => {
 
-  // const [taskItems, setTaskItems] = useState([])
   const [modalVisible, setModalVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false)
   
@@ -19,21 +19,19 @@ const Todo = () => {
   
   const dispatch = useDispatch();
 
-  const handleAddTask = (task) => {
-      // setTaskItems((currTask) => [...currTask, {text: task, id: Math.random().toString(), date: Date().toString()  }])
+  const handleAddTask = () => {
       setModalVisible(!modalVisible)
   }
 
-  const deleteTask = (id) => {
-    // setTaskItems(currTask => (currTask.filter((task) => task.id !== id)))
-    dispatch(deleteTodo(id))
+  const deleteTask = (id, text, date) => {
+    dispatch( deleteTodo(id))
+    dispatch(recover({id, text, date}))
     alert('you deleted task')
   }
   
   const completeTask = (id, text) => {
     dispatch(deleteTodo(id))
     dispatch(addCompleted({id, text}))
-    // setCount((currTask) => [...currTask, {text, id}] )
   }
 
 
@@ -41,6 +39,7 @@ const Todo = () => {
   return (
     <View style={styles.container}>
       <FlatList ListEmptyComponent={<EmptyList/>} data={[...todos].reverse()} renderItem={({item}) => (<TodoCard id={item.id} text={item.text} date={item.date} onDelete={deleteTask} onCheck={completeTask} />)}
+      style={{ marginBottom: 110, }}
       contentContainerStyle={todos.length === 0 && {flex: 1}} />
       <View style={styles.footer} >
         <View style={styles.doneTask} >
