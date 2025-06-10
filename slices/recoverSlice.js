@@ -12,9 +12,12 @@ const recoverSlice = createSlice({
             const { id, text, date } = action.payload
             state.recoverTodo.push({ id, text, date })
         },
+        deleteItem: (state, action) => {
+        state.recoverTodo = state.recoverTodo.filter(item => item.id !== action.payload);
+        },
         emptyList: () => initialState,
     }
 })
 
-export const { recover, emptyList } = recoverSlice.actions;
+export const { recover, deleteItem, emptyList } = recoverSlice.actions;
 export default recoverSlice.reducer
