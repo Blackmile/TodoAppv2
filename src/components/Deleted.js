@@ -2,7 +2,7 @@ import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteItem, emptyList } from '../../slices/recoverSlice'
-import { addTodo } from '../../slices/todoSlice'
+import { addTodo, recoverAllTodo } from '../../slices/todoSlice'
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Deleted = () => {
@@ -17,7 +17,10 @@ const Deleted = () => {
       dispatch(deleteItem(id))
     }
 
-    console.log(data)
+    const recoverAll = () => {
+      dispatch(recoverAllTodo(data))
+      dispatch(emptyList())
+    }
 
     const Card = (props) => {
       return(
@@ -49,7 +52,7 @@ const Deleted = () => {
 
       
       <View style={styles.footer} >
-        <Pressable style={styles.back} onPress={()=> console.log('retun!!')} >
+        <Pressable style={styles.back} onPress={ recoverAll } >
           <Ionicons name="arrow-undo" size={24} color="black" />
           <Text> Recover all task </Text>
         </Pressable>
@@ -95,7 +98,7 @@ const styles = StyleSheet.create({
       marginTop: 20,
     },
     card: {
-      padding: 5,
+      padding: 8,
       backgroundColor: '#fff',
       marginBottom: 10,
       flexDirection: 'row',
