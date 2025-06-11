@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { resetDone } from '../../slices/doneSlice';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import Deleted from './Deleted';
 
 
 const DoneTask = (props) => {
@@ -12,6 +11,15 @@ const DoneTask = (props) => {
 
     const DATA = useSelector(state => state.doneTodos.doneTodos)
     const dispatch = useDispatch()
+
+    const Card = (props) => {
+      return(
+        <View style={styles.itemStyle} >
+          <Text> {props.text} </Text>
+          <Text style={styles.itemDate} > completed task on {props.date} </Text>
+        </View>
+      )
+    }
     
 
   return (
@@ -32,7 +40,7 @@ const DoneTask = (props) => {
           </Pressable>
           <FlatList 
             data={DATA} 
-            renderItem={({item}) => <Text style={styles.itemStyle} >{item.text}</Text>}
+            renderItem={({item}) => <Card text={item.text} date={item.date} /> }
             initialNumToRender={5}
           />
           <View style={styles.footer}>
@@ -84,6 +92,10 @@ const styles = StyleSheet.create({
         padding: 5,
         borderRadius: 10,
         // color: 'white',
+    },
+    itemDate: {
+      fontSize: 10,
+      fontWeight: 200,
     },
     downbtn: {
         left: "90%",
