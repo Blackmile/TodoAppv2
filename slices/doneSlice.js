@@ -11,7 +11,7 @@ const doneSlice = createSlice({
   reducers:{
     addCompleted: (state, action) => {
       const { id, text } = action.payload
-      state.doneTodos.push({ id, text, date: Date() })
+      state.doneTodos.push({ id, text, date: new Date().toDateString() })
     },
     resetDone: () => initialState,
   },
