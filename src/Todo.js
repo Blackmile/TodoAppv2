@@ -1,6 +1,6 @@
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import EmptyList from './components/EmptyList';
 import TodoCard from './components/TodoCard';
 import TodoInput from './components/TodoInput';
@@ -9,6 +9,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { deleteTodo } from '../slices/todoSlice';
 import { addCompleted } from '../slices/doneSlice';
 import { recover } from '../slices/recoverSlice';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
 
 const Todo = () => {
 
@@ -34,13 +45,43 @@ const Todo = () => {
     dispatch(addCompleted({id, text}))
   }
 
+  const currentNotifId = useRef(null);
 
+  useEffect(() => {
+    const updateFirstIncompleteNotification = async () => {
+      // Cancel old notification if any
+      if (currentNotifId.current) {
+        await Notifications.cancelScheduledNotificationAsync(currentNotifId.current);
+        currentNotifId.current = null;
+      }
+
+      const OldTodo = todos[todos.length - 1]
+      console.log(OldTodo)
+      if (OldTodo) {
+        const triggerTime = new Date(Date.now() + 10 * 1000); // ⏰ 10s delay for testing
+
+        const notifId = await Notifications.scheduleNotificationAsync({
+          content: {
+            title: '📝 Task Reminder',
+            body: `Don't forget to: ${OldTodo.text}`,
+            data: { taskId: OldTodo.id },
+          },
+          trigger: triggerTime,
+        });
+
+        currentNotifId.current = notifId;
+        console.log(`Notification scheduled for "${OldTodo.text}"`);
+      }
+    };
+
+    updateFirstIncompleteNotification();
+  }, [todos]);
 
   return (
     <View style={styles.container}>
-      <FlatList ListEmptyComponent={<EmptyList/>} data={[...todos].reverse()} renderItem={({item}) => (<TodoCard id={item.id} text={item.text} date={item.date} onDelete={deleteTask} onCheck={completeTask} />)}
+      <FlatList ListEmptyComponent={<EmptyList/>} data={[...todos]} renderItem={({item}) => (<TodoCard id={item.id} text={item.text} date={item.date} onDelete={deleteTask} onCheck={completeTask} />)}
       style={{ marginBottom: 110, }}
-      contentContainerStyle={todos.length === 0 && {flex: 1}} />
+      contentContainerStyle={todos.length === 0 && {flex: 1, justifyContent: 'center'}} />
       <View style={styles.footer} >
         <View style={styles.doneTask} >
           <Pressable onPress={() => {setIsVisible(true)}}>
@@ -83,4 +124,13 @@ const styles = StyleSheet.create({
   },
   doneTask: {},
   
-})
+})                                            
+
+
+
+
+
+
+
+
+
