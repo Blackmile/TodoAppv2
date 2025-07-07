@@ -54,9 +54,9 @@ export default function App() {
               }
             }})}
           >
-            <Tab.Screen name='Home' component={Home} />
-            <Tab.Screen name='Note' component={Note} />
+            {/* <Tab.Screen name='Home' component={Home} /> */}
             <Tab.Screen name='TodoNest'  component={TodoNest} />
+            <Tab.Screen name='Note' component={Note} />
           </Tab.Navigator>
         </NavigationContainer>
       </PersistGate>
