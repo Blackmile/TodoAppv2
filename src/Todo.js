@@ -58,15 +58,17 @@ const Todo = () => {
       const OldTodo = todos[todos.length - 1]
       console.log(OldTodo)
       if (OldTodo) {
-        const triggerTime = new Date(Date.now() + 10 * 1000); // ⏰ 10s delay for testing
-
         const notifId = await Notifications.scheduleNotificationAsync({
           content: {
             title: '📝 Task Reminder',
             body: `Don't forget to: ${OldTodo.text}`,
             data: { taskId: OldTodo.id },
           },
-          trigger: triggerTime,
+          trigger: {
+            type: Notifications.SchedulableTriggerInputTypes.DAILY,
+            hour: 1,
+            repeats: true,
+          }
         });
 
         currentNotifId.current = notifId;
