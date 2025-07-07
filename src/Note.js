@@ -3,41 +3,9 @@ import React from 'react'
 
 const Note = () => {
 
-  const Data = [{
-      id: '1',
-      title: 'First Item',
-    },
-    {
-      id: '2',
-      title: 'Second Item',
-    },
-    {
-      id: '3',
-      title: 'Third Item',
-    },
-    {
-      id: '4',
-      title: 'Third Item',
-    },
-    {
-      id: '5',
-      title: 'Third Item',
-    },
-    {
-      id: '6',
-      title: 'Third Item',
-    },
-  ]
-
   return (
-    <View >
-      <FlatList
-        style={styles.container}
-        data={Data}
-        renderItem={({ item }) => (
-          <Text> {item.title} </Text>
-        )}
-      />
+    <View style={ styles.container } >
+      <Text style={ styles.text } > Coming Soon... </Text>
     </View>
   )
 }
@@ -47,5 +15,11 @@ export default Note
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  }
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    fontSize: 32,
+    fontWeight: '400',
+  },
 })

@@ -10,7 +10,7 @@ const TodoCard = (props) => {
             <Text style={styles.date} > {props.date} </Text>
         </View>
         <View style={styles.actionBtn} >
-            <Pressable onPress={props.onDelete.bind(this, props.id)}>
+            <Pressable onPress={props.onDelete.bind(this, props.id, props.text, props.date)}>
                 <Ionicons name="trash-bin" size={18} color="#EE7F7F" />
             </Pressable>
             <Pressable onPress={props.onCheck.bind(this, props.id, props.text)}>
